@@ -29,16 +29,14 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+    - name: Check .dockerignore
+      run: |
+          find -name "WebApp.war"
       
   Docker_Scan:
     
     runs-on: ubuntu-latest
-    steps:
-      - name: Check .dockerignore
-        run: |
-          cd /var/lib/jenkins/workspace/webapp/target/
-          ls -a
-          
+    steps:    
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build an image from Dockerfile
