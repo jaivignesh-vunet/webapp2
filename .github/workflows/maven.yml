@@ -68,6 +68,7 @@ jobs:
           
       - name: Run Trivy vulnerability scanner (Sarif)
         uses: aquasecurity/trivy-action@master
+        if: always()
         with:
           image-ref: 'docker.io/jaivignesh-vunet/webapp2:${{ github.sha }}'
           format: 'sarif'
@@ -75,6 +76,7 @@ jobs:
           
       - name: Upload Trivy scan results as artifact
         uses: actions/upload-artifact@v2
+        if: always()
         with:
           name: docker-results
           path: docker-results.sarif
