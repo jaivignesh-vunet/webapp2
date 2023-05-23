@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Check .dockerignore
         run: |
-          find / -name "Webapp.jar"
+          find -name "Webapp.war"
           
       - name: Checkout code
         uses: actions/checkout@v2
