@@ -31,7 +31,7 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Check .dockerignore
       run: |
-          find -name "WebApp.war"
+          find . -name "WebApp.war"
       
   Docker_Scan:
     
