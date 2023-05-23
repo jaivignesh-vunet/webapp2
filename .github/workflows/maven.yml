@@ -36,7 +36,7 @@ jobs:
     steps:
       - name: Check .dockerignore
         run: |
-          ls -a
+          find / -name "*.jar"
           pwd
 
       - name: Checkout code
