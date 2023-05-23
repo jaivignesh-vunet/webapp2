@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM adoptopenjdk:11-jre-hotspot
 
 RUN apk --no-cache add openjdk8-jre
 
@@ -7,4 +7,4 @@ EXPOSE 8080
 COPY ./target/WebApp.war /usr/app/
 WORKDIR /usr/app
 
-ENTRYPOINT ["java", "-war", "usr/app/*.war"]
+ENTRYPOINT ["java", "-jar", "usr/app/*.war"]
