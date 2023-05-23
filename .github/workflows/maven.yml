@@ -47,6 +47,10 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+        
+      - name: Check .dockerignore
+        run: |
+          find . -name "WebApp.war"
       
       - name: Checkout code
         uses: actions/checkout@v2
