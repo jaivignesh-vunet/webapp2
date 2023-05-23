@@ -35,7 +35,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check .dockerignore
-        run: ls -R
+        run: |
+          ls -a
+          pwd
 
       - name: Checkout code
         uses: actions/checkout@v2
