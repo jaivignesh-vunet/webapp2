@@ -55,6 +55,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
+      - name: Check .dockerignore
+        run: |
+          find . -name "WebApp.war"
+      
+        
       - name: Build an image from Dockerfile
         run: |
           docker build -t docker.io/jaivignesh-vunet/webapp2:${{ github.sha }} .
