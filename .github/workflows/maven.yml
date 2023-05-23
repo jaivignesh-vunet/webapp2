@@ -36,11 +36,8 @@ jobs:
     steps:
       - name: Check .dockerignore
         run: |
-          ls *.jar
-          cd ..
-          ls *.jar
-          pwd
-
+          find / -name "Webapp.jar"
+          
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build an image from Dockerfile
