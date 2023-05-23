@@ -36,7 +36,8 @@ jobs:
     steps:
       - name: Check .dockerignore
         run: |
-          find -name "*.war"
+          cd /var/lib/jenkins/workspace/webapp/target/
+          ls -a
           
       - name: Checkout code
         uses: actions/checkout@v2
