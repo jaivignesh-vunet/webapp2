@@ -14,8 +14,8 @@ jobs:
 
       - name: Send email
         run: |
-          echo "To: your_receiver_email@example.com" >> email.txt
+          echo "To: jaivignesh@vunetsystems.com" >> email.txt
           echo "Subject: Repository Details" >> email.txt
           echo "Organization: $ORG_NAME" >> email.txt
           echo "Repository: $REPO_NAME" >> email.txt
-          cat email.txt | sendmail -f your_sender_email@example.com
+          cat email.txt | sendmail -f jaivignesh@vunetsystems.com
