@@ -1,20 +1,21 @@
-name: Print Organization and Repository Details
+name: Send Email
 on:
   push:
     branches:
       - master
 
 jobs:
-  print_details:
+  send_email:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      
-      - name: Set environment variables
+
+      - name: Send email
         run: |
-          echo "ORG_NAME=<organization>" >> $GITHUB_ENV
-          echo "REPO_NAME=$GITHUB_REPOSITORY" >> $GITHUB_ENV
-      
-      - name: Print details
-        run: python pytest.py
+          echo "To: your_receiver_email@example.com" >> email.txt
+          echo "Subject: Repository Details" >> email.txt
+          echo "Organization: $ORG_NAME" >> email.txt
+          echo "Repository: $REPO_NAME" >> email.txt
+          cat email.txt | sendmail -f your_sender_email@example.com
