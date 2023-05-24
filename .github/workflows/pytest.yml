@@ -10,6 +10,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install actions/email
+        run: |
+          sudo apt-get update
+          sudo apt-get install actions/email
+
       - name: Send mail
         uses: actions/email@v1
         with:
