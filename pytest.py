@@ -1,17 +1,9 @@
-import github
+import os
 
-# Get the GitHub API client
-client = github.Github()
+# Get organization and repository details from environment variables
+organization_name = os.environ["ORG_NAME"]
+repository_name = os.environ["REPO_NAME"]
 
-# Get the current user
-user = client.get_user()
-
-# Get the organization name
-organization_name = user.organization.login
-
-# Get the repository name
-repository_name = user.get_repo("my-repository").name
-
-# Print the organization name and repository name
-print(f"Organization name: {organization_name}")
-print(f"Repository name: {repository_name}")
+# Print organization and repository details
+print("Organization: ", organization_name)
+print("Repository: ", repository_name)
