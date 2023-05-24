@@ -1,24 +1,20 @@
-name: Send Email
+name: Print Organization and Repository Details
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master  # Adjust the branch name as needed
 
 jobs:
-  build:
+  print_details:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Install actions/email
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set environment variables
         run: |
-          sudo apt-get update
-          sudo apt-get install actions/email
-
-      - name: Send mail
-        uses: actions/email@v1
-        with:
-          from: "jaivignesh@vunetsystems.com"
-          to: "jaivignesh@vunetsystems.com"
-          subject: "Test email"
-          body: "This is a test email."
+          echo "ORG_NAME=<organization>" >> $GITHUB_ENV
+          echo "REPO_NAME=$GITHUB_REPOSITORY" >> $GITHUB_ENV
+      
+      - name: Print details
+        run: python pytest.py
