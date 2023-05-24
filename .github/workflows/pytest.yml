@@ -17,4 +17,4 @@ jobs:
           echo "REPO_NAME=$GITHUB_REPOSITORY" >> $GITHUB_ENV
       
       - name: Print details
-        run: python jaivignesh-vunet/webapp2/pytest.py
+        run: python pytest.py
