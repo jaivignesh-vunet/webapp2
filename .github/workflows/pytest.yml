@@ -1,24 +1,20 @@
-name: First Code Integration
-
+name: Print Organization and Repository Details
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
 
 jobs:
-  build:
+  print_details:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Install dependencies
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set environment variables
         run: |
-          sudo apt-get update
-          sudo apt-get install python3-pip
-          pip install github
-
-      - name: Run tests
-        run: |
-          python3 -m pytest
+          echo "ORG_NAME=<organization>" >> $GITHUB_ENV
+          echo "REPO_NAME=$GITHUB_REPOSITORY" >> $GITHUB_ENV
+      
+      - name: Print details
+        run: python jaivignesh-vunet/webapp2/pytest.py
