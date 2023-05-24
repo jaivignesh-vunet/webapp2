@@ -1,21 +1,19 @@
 name: Send Email
 on:
   push:
-    branches:
-      - master
+    branches: [ "master" ]
 
 jobs:
-  send_email:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Send email
-        run: |
-          echo "To: jaivignesh@vunetsystems.com" >> email.txt
-          echo "Subject: Repository Details" >> email.txt
-          echo "Organization: $ORG_NAME" >> email.txt
-          echo "Repository: $REPO_NAME" >> email.txt
-          cat email.txt | sendmail -f jaivignesh@vunetsystems.com
+      - name: Send mail
+        uses: actions/email@v1
+        with:
+          from: "jaivignesh@vunetsystems.com"
+          to: "jaivignesh@vunetsystems.com"
+          subject: "Test email"
+          body: "This is a test email."
