@@ -16,8 +16,8 @@ jobs:
         uses: atlassian/jira-upload-artifacts@v1
         with:
           url: https://your-jira-server.com
-          username: your-username
-          password: your-password
+          username: ${{ env.GMAIL_USERNAME }}
+          password: ${{ env.GMAIL_PASSWORD }}
           projectKey: 'TEST'
           issueKey: 'TEST-1'
           artifacts: artifacts
