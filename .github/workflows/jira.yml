@@ -13,7 +13,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y jq
       - name: Upload artifacts to Jira
-        uses: atlassian/jira-upload-artifacts@v1
+        uses: jpadilla8/jira-upload-artifacts@v1
         with:
           url: https://your-jira-server.com
           username: ${{ env.GMAIL_USERNAME }}
