@@ -1,4 +1,4 @@
 [[rules]]
-regex = 'organization'
+regex = 'script'
 description = 'Potential leaked organization name'
 severity = 'CRITICAL'
