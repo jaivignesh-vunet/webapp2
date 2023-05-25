@@ -1,0 +1,4 @@
+[[rules]]
+regex = 'organization'
+description = 'Potential leaked organization name'
+severity = 'CRITICAL'
