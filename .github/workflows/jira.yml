@@ -1,0 +1,23 @@
+name: Upload Artifacts to Jira
+on:
+  push:
+    branches:
+      - master
+jobs:
+  upload-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+      - name: Upload artifacts to Jira
+        uses: atlassian/jira-upload-artifacts@v1
+        with:
+          url: https://your-jira-server.com
+          username: your-username
+          password: your-password
+          projectKey: 'TEST'
+          issueKey: 'TEST-1'
+          artifacts: artifacts
