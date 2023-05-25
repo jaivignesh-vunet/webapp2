@@ -46,3 +46,4 @@ email = {
 response = mailjet.send.create(data=email)
 print(response.status_code)
 print(response.json())
+print ("hello")
