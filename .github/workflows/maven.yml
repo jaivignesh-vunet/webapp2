@@ -112,15 +112,22 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: Repo-results
+          
+      - name: Convert SARIF to text
+        run: |
+    
+          apt-get update && apt-get install -y jq
+          jq -r '.runs[].results[].message.text' < Repo-results.sarif > Repo-results.txt
+
       
       - name: Find files
         run: |
-          find . -name "*Repo-results*" 
+          find . -name "Repo-results.txt" 
          
       - name: import flaws as issues
         uses: buzzcode/veracode-flaws-to-issues@v1
         with:
-          scan-results-json: 'Repo-results.sarif'
+          scan-results-json: 'Repo-results.txt'
           github-token: ${{ secrets.GITHUB_TOKEN }}
             
             
