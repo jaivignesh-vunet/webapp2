@@ -105,13 +105,12 @@ jobs:
         with:
           name: Repo-results
           
-      - name: Convert SARIF to JSON
+      - name: Convert SARIF to text
         run: |
     
-            apt-get update && apt-get install -y jq
+          apt-get update && apt-get install -y jq
+          jq -r '.runs[].results[].message.text' < Repo-results.sarif > Repo-results.txt
 
-    
-            jq . < Repo-results.sarif > Repo-results.txt
 
 
       
@@ -138,7 +137,7 @@ jobs:
             https://api.github.com/repos/jaivignesh-vunet/webapp2/issues \
             -d '{
               "title":"Found a bug",
-              "body":"I'\''m having a problem with this."   }'
+              "body": "'"${REPORT_CONTENT}"'"   }'
           
 
   Infrastructure_ascode:
