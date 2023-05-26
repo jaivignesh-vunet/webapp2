@@ -115,12 +115,12 @@ jobs:
       
       - name: Find files
         run: |
-          find . -name "*Repo_results*" 
+          find . -name "*Repo-results*" 
          
       - name: import flaws as issues
         uses: buzzcode/veracode-flaws-to-issues@v1
         with:
-          scan-results-json: 'Repo_results'
+          scan-results-json: 'Repo-results'
           github-token: ${{ secrets.GITHUB_TOKEN }}
             
             
