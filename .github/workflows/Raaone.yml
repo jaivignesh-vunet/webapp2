@@ -1,0 +1,217 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  Build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+    - name: Check .dockerignore
+      run: |
+          find . -name "WebApp.war"
+      
+  Docker_Scan:
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+        
+      - name: Build an image from Dockerfile
+        run: |
+          docker build -t docker.io/jaivignesh-vunet/webapp2:${{ github.sha }} .
+          
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'docker.io/jaivignesh-vunet/webapp2:${{ github.sha }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          
+      - name: Run Trivy vulnerability scanner (Sarif)
+        uses: aquasecurity/trivy-action@master
+        if: always()
+        with:
+          image-ref: 'docker.io/jaivignesh-vunet/webapp2:${{ github.sha }}'
+          format: 'sarif'
+          output: 'docker-results.sarif'
+          
+      - name: Upload Trivy scan results as artifact
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: docker-results
+          path: docker-results.sarif
+          
+          
+  Repo_Scan:
+
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+  
+        - name: Run Trivy vulnerability scanner in repo mode
+          uses: aquasecurity/trivy-action@master
+          with:
+            scan-type: 'fs'
+            ignore-unfixed: true
+            format: 'sarif'
+            output: 'Repo-results.sarif'
+            severity: 'CRITICAL,HIGH'
+            
+        - name: Upload Trivy scan results as artifact
+          uses: actions/upload-artifact@v2
+          with:
+            name: Repo-results
+            path: Repo-results.sarif
+            
+  import-issues:
+      needs: Repo_Scan
+      runs-on: ubuntu-latest
+      steps:
+      - name: get scan results
+        uses: actions/download-artifact@v2
+        with:
+          name: Repo-results
+          
+      - name: Convert SARIF to JSON
+        run: |
+    
+            apt-get update && apt-get install -y jq
+
+    
+            jq . < Repo-results.sarif > Repo-results.txt
+
+
+      
+      - name: Find files
+        run: |
+          find . -name "Repo-results.txt" 
+          
+      - name: Create GitHub issue
+        run: |
+    
+          OWNER=jaivignesh-vunet
+          REPO=webapp2
+          REPORT_PATH=Repo-results.txt
+
+
+          REPORT_CONTENT=$(cat $REPORT_PATH)
+          TOKEN="${{ secrets.ISSUE }}"
+    
+          curl -L \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $TOKEN"\
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/jaivignesh-vunet/webapp2/issues \
+            -d '{
+              "title":"Found a bug",
+              "body": $REPORT_CONTENT
+              }'
+          
+
+Infrastructure_ascode:
+    
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run Trivy vulnerability scanner in IaC mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'config'
+          hide-progress: false
+          format: 'sarif'
+          output: 'Infra-results.sarif'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
+          
+      - name: Upload Trivy scan results as artifact
+        uses: actions/upload-artifact@v2
+        with:
+            name: Infra-results
+            path: Infra-results.sarif    
+            
+            
+  Truffle_Hog:
+    name: TruffleHog Enterprise scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # fetch all history so multiple commits can be scanned
+      - name: TruffleHog Enterprise scan
+        uses: trufflesecurity/TruffleHog-Enterprise-Github-Action@main
+        with:
+            args: --fail-verified ${{ github.event.repository.default_branch }} HEAD
+                  --json
+  
+  
+  Build_Push_Docker:
+    
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+        
+      - name: Build and push Docker Image
+        uses: mr-smithers-excellent/docker-build-push@v4
+        with:
+          context: .  # The context for the build, assuming the Dockerfile is in the root of the repository
+          push: true
+          image: jay2k02/test-repository
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      
+        
+        
+      
+
+    
