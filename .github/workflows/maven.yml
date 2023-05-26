@@ -113,21 +113,24 @@ jobs:
         with:
           name: Repo-results
           
-      - name: Convert SARIF to text
+      - name: Convert SARIF to JSON
         run: |
     
-          apt-get update && apt-get install -y jq
-          jq -r '.runs[].results[].message.text' < Repo-results.sarif > Repo-results.txt
+            apt-get update && apt-get install -y jq
+
+    
+            jq . < Repo-results.sarif > Repo-results.json
+
 
       
       - name: Find files
         run: |
-          find . -name "Repo-results.txt" 
+          find . -name "Repo-results.json" 
          
       - name: import flaws as issues
         uses: buzzcode/veracode-flaws-to-issues@v1
         with:
-          scan-results-json: 'Repo-results.txt'
+          scan-results-json: 'Repo-results.json'
           github-token: ${{ secrets.GITHUB_TOKEN }}
             
             
