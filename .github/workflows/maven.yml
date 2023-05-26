@@ -119,20 +119,20 @@ jobs:
             apt-get update && apt-get install -y jq
 
     
-            jq . < Repo-results.sarif > Repo-results.txt
+            jq . < Repo-results.sarif > Repo-results.json
 
 
       
       - name: Find files
         run: |
-          find . -name "Repo-results.txt" 
+          find . -name "Repo-results.json" 
           
       - name: Create GitHub issue
         run: |
     
           OWNER=jaivignesh-vunet
           REPO=webapp2
-          REPORT_PATH=Repo-results.txt
+          REPORT_PATH=Repo-results.json
 
 
           REPORT_CONTENT=$(cat $REPORT_PATH)
