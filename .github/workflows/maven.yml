@@ -119,7 +119,7 @@ jobs:
             apt-get update && apt-get install -y jq
 
     
-            jq . < Repo-results.sarif > Repo-results.json
+            jq . < Repo-results.sarif > Repo-results.txt
 
 
       
@@ -130,8 +130,29 @@ jobs:
       - name: import flaws as issues
         uses: buzzcode/veracode-flaws-to-issues@v1
         with:
-          scan-results-json: 'Repo-results.json'
+          scan-results-json: 'Repo-results.txt'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Create GitHub issue
+        run: |
+    
+          OWNER=jaivignesh-vunet
+          REPO=webapp2
+          REPORT_PATH=Repo-results.txt
+
+
+          REPORT_CONTENT=$(cat $REPORT_PATH)
+
+    
+          curl -X POST \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d '{
+          "title": "Scan Report",
+          "body": "'"${REPORT_CONTENT}"'"
+          }' \
+          "https://api.github.com/repos/$OWNER/$REPO/issues"
+
             
             
   Infrastructure_ascode:
