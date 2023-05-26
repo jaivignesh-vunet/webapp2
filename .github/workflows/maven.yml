@@ -112,7 +112,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: Repo-results
-
+      
+      - name: Find files
+        run: |
+          find . -name "Repo_results.json" 
+         
       - name: import flaws as issues
         uses: buzzcode/veracode-flaws-to-issues@v1
         with:
