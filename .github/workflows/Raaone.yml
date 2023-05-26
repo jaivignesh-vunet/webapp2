@@ -125,6 +125,7 @@ jobs:
           REPO=webapp2
           
           REPORT_CONTENT=$(cat Repo-results.txt)
+          echo "Heloooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
           echo "$REPORT_CONTENT"
           TOKEN="${{ secrets.ISSUE }}"
     
