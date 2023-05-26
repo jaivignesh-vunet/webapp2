@@ -115,7 +115,7 @@ jobs:
       
       - name: Find files
         run: |
-          find . -name "Repo_results.json" 
+          find . -name "*Repo_results*" 
          
       - name: import flaws as issues
         uses: buzzcode/veracode-flaws-to-issues@v1
