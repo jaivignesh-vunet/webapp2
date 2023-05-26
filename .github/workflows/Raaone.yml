@@ -123,10 +123,9 @@ jobs:
     
           OWNER=jaivignesh-vunet
           REPO=webapp2
-          REPORT_PATH=Repo-results.txt
-
-
-          REPORT_CONTENT=$(cat $REPORT_PATH)
+          
+          REPORT_CONTENT=$(cat Repo-results.txt)
+          echo "$REPORT_CONTENT"
           TOKEN="${{ secrets.ISSUE }}"
     
           curl -L \
