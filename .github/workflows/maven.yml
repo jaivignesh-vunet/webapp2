@@ -116,7 +116,7 @@ jobs:
       - name: import flaws as issues
         uses: buzzcode/veracode-flaws-to-issues@v1
         with:
-          scan-results-json: 'Repo_results.json'
+          scan-results-json: 'Repo_results'
           github-token: ${{ secrets.GITHUB_TOKEN }}
             
             
