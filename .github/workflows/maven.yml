@@ -94,15 +94,15 @@ jobs:
           with:
             scan-type: 'fs'
             ignore-unfixed: true
-            format: 'json'
-            output: 'Repo-results.json'
+            format: 'sarif'
+            output: 'Repo-results.sarif'
             severity: 'CRITICAL,HIGH'
             
         - name: Upload Trivy scan results as artifact
           uses: actions/upload-artifact@v2
           with:
             name: Repo-results
-            path: Repo-results.json
+            path: Repo-results.sarif
             
   import-issues:
       needs: Repo_Scan
@@ -120,7 +120,7 @@ jobs:
       - name: import flaws as issues
         uses: buzzcode/veracode-flaws-to-issues@v1
         with:
-          scan-results-json: 'Repo-results.json'
+          scan-results-json: 'Repo-results.sarif'
           github-token: ${{ secrets.GITHUB_TOKEN }}
             
             
