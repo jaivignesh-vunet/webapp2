@@ -119,18 +119,18 @@ jobs:
             apt-get update && apt-get install -y jq
 
     
-            jq . < Repo-results.sarif > Repo-results.json
+            jq . < Repo-results.sarif > Repo-results.txt
 
 
       
       - name: Find files
         run: |
-          find . -name "Repo-results.json" 
+          find . -name "Repo-results.txt" 
          
       - name: import flaws as issues
         uses: buzzcode/veracode-flaws-to-issues@v1
         with:
-          scan-results-json: 'Repo-results.json'
+          scan-results-txt: 'Repo-results.txt'
           github-token: ${{ secrets.GITHUB_TOKEN }}
             
             
