@@ -108,6 +108,7 @@ jobs:
 
       - name: Find files
         run: |
+          echo "cat Repo-results.txt"
           find . -name "Repo-results.txt"
 
       - name: Set up Python
