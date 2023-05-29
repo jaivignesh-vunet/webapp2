@@ -186,7 +186,11 @@ jobs:
 
           print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
           EOF
-            
+          
+      - name: Find files
+        run: |
+          find . -name "Repo-results.txt"
+    
   IImport-issues:
       if: ${{ always() }}
       needs: [Repo_Scan]
