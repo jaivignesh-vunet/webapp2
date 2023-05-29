@@ -141,7 +141,7 @@ jobs:
             name: Repo-results
             path: Repo-results.sarif
             
-  import-issues:
+  IImport-issues:
       needs: Repo_Scan
       runs-on: ubuntu-latest
       steps:
