@@ -75,7 +75,8 @@ jobs:
           
   import-issues:
   
-      needs: Docker_Scan
+      if: ${{ always() }}
+      needs: [Docker_Scan]
       runs-on: ubuntu-latest
       steps:
       - name: get scan results
@@ -142,7 +143,8 @@ jobs:
             path: Repo-results.sarif
             
   IImport-issues:
-      needs: Repo_Scan
+      if: ${{ always() }}
+      needs: [Repo_Scan]
       runs-on: ubuntu-latest
       steps:
       - name: get scan results
