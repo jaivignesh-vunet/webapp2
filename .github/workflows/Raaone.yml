@@ -172,7 +172,7 @@ jobs:
           }
 
           files = [
-              ("Repo-results.txt", open("Repo-results.txt", "rb"), "application-type"),
+              ("Repo-results.txt", open("./Repo-results.txt", "rb"), "application-type"),
 
           ]
 
