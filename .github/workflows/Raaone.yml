@@ -121,6 +121,71 @@ jobs:
             name: Repo-results
             path: Repo-results.sarif
             
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: get scan results
+        uses: actions/download-artifact@v2
+        with:
+          name: Repo-results
+          
+      - name: Convert SARIF to text
+        run: |
+    
+          apt-get update && apt-get install -y jq
+          jq -r '.runs[].results[].message.text' < Repo-results.sarif > Repo-results.txt
+
+      - name: Find files
+        run: |
+          find . -name "Repo-results.txt"
+      
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Upload files
+        run: |
+          python - <<EOF
+          
+          import requests
+          from requests.auth import HTTPBasicAuth
+          import json
+
+          url = "https://jay2k02.atlassian.net/rest/api/3/issue/TEST-1/attachments"
+
+          auth = HTTPBasicAuth("${{ secrets.GMAIL_USERNAME }}", "${{ secrets.APIKEY }}")
+
+          headers = {
+              "Accept": "application/json",
+              "X-Atlassian-Token": "no-check"
+          }
+
+          files = [
+              ("Repo-results.txt", open("Repo-results.txt", "rb"), "application-type"),
+
+          ]
+
+          response = requests.request(
+              "POST",
+              url,
+              headers=headers,
+              auth=auth,
+              files=files
+          )
+
+          print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
+          EOF
+            
   IImport-issues:
       if: ${{ always() }}
       needs: [Repo_Scan]
