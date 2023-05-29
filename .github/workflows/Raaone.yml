@@ -97,8 +97,8 @@ jobs:
           REPO=webapp2
           
           REPORTS_CONTENT=$(cat docker-results.txt)
+          ESCAPED_CONTENT=$(echo "$REPORTS_CONTENT" | jq -Rs '@uri')
           echo "Heloooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
-          echo "$REPORT_CONTENT"
           TOKEN="${{ secrets.ISSUE }}"
     
           curl -L \
@@ -109,8 +109,8 @@ jobs:
             https://api.github.com/repos/jaivignesh-vunet/webapp2/issues \
             -d '{
               "title":"Found a bugsSSSSSSSSSSSSSSSSS",
-              "body": "'"${REPORTS_CONTENT}"'"   }'
-              
+              "body": "'"${ESCAPED_CONTENT}"'"              
+          
           echo "Byeeeee"
           
           
