@@ -99,8 +99,8 @@ jobs:
           REPORTS_CONTENT=$(cat docker-results.txt)
           TOKEN="${{ secrets.ISSUE }}"
 
-          ISSUE_TITLE="Found a bug"
-          ISSUE_BODY="**Scan Results:**\n\n$REPORTS_CONTENT"
+          DISCUSSION_TITLE="Scan Results"
+          DISCUSSION_BODY="$REPORTS_CONTENT"
 
           curl -L \
             -X POST \
@@ -109,12 +109,12 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             -H "Content-Type: application/json" \
             -d "{
-              \"title\": \"$ISSUE_TITLE\",
-              \"body\": \"$ISSUE_BODY\"
+              \"title\": \"$DISCUSSION_TITLE\",
+              \"body\": \"$DISCUSSION_BODY\"
             }" \
-            "https://api.github.com/repos/$OWNER/$REPO/issues"
+            "https://api.github.com/repos/$OWNER/$REPO/discussions"
 
-          echo "Issue created successfully."
+          echo "Discussion created successfully."
 
           
   Repo_Scan:
