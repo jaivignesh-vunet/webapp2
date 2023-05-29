@@ -170,17 +170,14 @@ jobs:
               "X-Atlassian-Token": "no-check"
           }
 
-          files = [
-              ("Repo-results.txt", open("./Repo-results.txt", "rb"), "application-type"),
-
-          ]
-
           response = requests.request(
-              "POST",
-              url,
-              headers=headers,
-              auth=auth,
-              files=files
+          "POST",
+          url,
+          headers = headers,
+          auth = auth,
+          files = {
+               "file": ("Repo-results.txt", open("Repo-results.txt","rb"), "application-type")
+          }
           )
 
           print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
