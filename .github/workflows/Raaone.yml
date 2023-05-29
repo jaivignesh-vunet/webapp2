@@ -82,7 +82,12 @@ jobs:
         run: |
           apt-get update && apt-get install -y jq
           jq -r '.runs[].results[].message.text' < docker-results.sarif > docker-results.txt
-
+      
+      - name: Find files
+        run: |
+          find . -name "docker-results.txt" 
+          REPORTS_CONTENT=$(cat docker-results.txt)
+          echo "$REPORTS_CONTENT"
       
       - name: create issue      
         uses: JasonEtco/create-an-issue@v2.4.0
