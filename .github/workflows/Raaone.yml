@@ -108,7 +108,7 @@ jobs:
           npm install @actions/github
 
           echo "Fetching release ID..."
-          node -e "const github = require('@actions/github'); const octokit = github.getOctokit('${{ secrets.GITHUB_TOKEN }}'); octokit.repos.getReleaseByTag({owner: '${{ github.repository_owner }}', repo: '${{ github.repository }}', tag: '${{ github.sha }}'}).then(response => { console.log('::set-output name=release_id::' + response.data.id); }).catch(error => { console.error(error); process.exit(1); });"
+          node -e "const github = require('@actions/github'); const octokit = github.getOctokit('${{ secrets.ISSUE }}'); octokit.repos.getReleaseByTag({owner: '${{ github.repository_owner }}', repo: '${{ github.repository }}', tag: '${{ github.sha }}'}).then(response => { console.log('::set-output name=release_id::' + response.data.id); }).catch(error => { console.error(error); process.exit(1); });"
 
 
       - name: Upload Asset to Release
