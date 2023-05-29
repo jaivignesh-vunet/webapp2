@@ -83,7 +83,14 @@ jobs:
           apt-get update && apt-get install -y jq
           jq -r '.runs[].results[].message.text' < docker-results.sarif > docker-results.txt
 
-
+      
+      - name: create issue      
+      - uses: actions/checkout@v2.1.0
+      - uses: JasonEtco/create-an-issue@v2.4.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.ISSUE }}
+        with:
+          filename: docker-results.txt
 
       
       - name: Find files
