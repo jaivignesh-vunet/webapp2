@@ -147,15 +147,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.8          
 
-      - name: Install dependencies
+      - name: Upload files
+        working-directory: ./
         run: |
           python -m pip install --upgrade pip
           pip install requests
-
-      - name: Upload files
-        run: |
+          
           python - <<EOF
           
           import requests
