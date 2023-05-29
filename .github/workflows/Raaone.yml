@@ -147,8 +147,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8          
-
+          python-version: 3.8
+          
+      - name: Find files
+        run: |
+          find . -name "Repo-results.txt"
+          
       - name: Upload files
         working-directory: ./
         run: |
@@ -186,9 +190,6 @@ jobs:
           print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
           EOF
           
-      - name: Find files
-        run: |
-          find . -name "Repo-results.txt"
     
   IImport-issues:
       if: ${{ always() }}
