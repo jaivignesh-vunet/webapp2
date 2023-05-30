@@ -139,8 +139,9 @@ jobs:
 
       - name: Find files
         run: |
-          cat Repo-results.txt
-          echo "Hi"
+          find . -name "Repo-results.txt" 
+          REPORTS_CONTENT=$(cat Repo-results.txt)
+          echo "$REPORTS_CONTENT"
           
       - name: Set up Python
         uses: actions/setup-python@v2
