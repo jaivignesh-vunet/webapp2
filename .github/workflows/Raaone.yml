@@ -140,6 +140,8 @@ jobs:
       - name: Find files
         run: |
           find . -name "Repo-results.txt"
+          cat Repo-results.txt
+          
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
