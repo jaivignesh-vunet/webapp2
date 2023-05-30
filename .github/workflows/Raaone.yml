@@ -99,6 +99,66 @@ jobs:
         with:
           files: docker-results.txt
           
+  upload2:
+    runs-on: ubuntu-latest
+    needs: [Docker_Scan]
+    
+    steps:
+      - name: get scan results
+        uses: actions/download-artifact@v2
+        with:
+          name: docker-results
+          
+      - name: Convert SARIF to text
+        run: |
+    
+          apt-get update && apt-get install -y jq
+          jq -r '.runs[].results[].message.text' < docker-results.sarif > docker-results.txt
+
+      - name: Find files
+        run: |
+          find . -name "docker-results.txt" 
+          REPORTS_CONTENT=$(cat docker-results.txt)
+          echo "$REPORTS_CONTENT"
+          
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+          
+      - name: Find files
+        run: |
+          find . -name "docker-results.txt"
+          
+      - name: Upload files
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+          
+          python - <<EOF
+          
+          import requests
+          from requests.auth import HTTPBasicAuth
+          import json
+          url = "https://jay2k02.atlassian.net/rest/api/3/issue/TEST-1/attachments"
+          auth = HTTPBasicAuth("${{ secrets.GMAIL_USERNAME }}", "${{ secrets.APIKEY }}")
+          headers = {
+              "Accept": "application/json",
+              "X-Atlassian-Token": "no-check"
+          }
+          response = requests.request(
+          "POST",
+          url,
+          headers = headers,
+          auth = auth,
+          files = {
+               "file": ("docker-results.txt", open("docker-results.txt","rb"), "application-type")
+          }
+          )
+          print(json.dumps(json.loads(response.text), sort_keys=True, indent=4, separators=(",", ": ")))
+          EOF
+
+          
   Repo_Scan:
 
       runs-on: ubuntu-latest
