@@ -29,8 +29,8 @@ jobs:
           with:
             context: .  # The context for the build, assuming the Dockerfile is in the root of the repository
             push: true
-            tags: v1, latest
-            image: jay2k02/test-repository:latest .
+            image: jay2k02/test-repository
+            tags: latest
             registry: docker.io
             username: ${{ secrets.DOCKER_USERNAME }}
             password: ${{ secrets.DOCKER_PASSWORD }}
