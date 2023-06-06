@@ -27,7 +27,7 @@ jobs:
         - name: Build and push Docker image
           run: |
             docker build -t docker.io/jay2k02/test-repository:latest .
-            docker push docker.io/jay2k02/test-repository:latest
+            docker push docker.io/jay2k02/test-repository
           env:
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
             DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
