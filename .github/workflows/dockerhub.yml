@@ -23,6 +23,14 @@ jobs:
             cache: maven
         - name: Build with Maven
           run: mvn -B package --file pom.xml
+        
+        - name: Print Docker credentials
+          run: |
+            echo "DOCKER_USERNAME: $DOCKER_USERNAME"
+            echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
+          env:
+            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
         - name: Build and push Docker image
           run: |
