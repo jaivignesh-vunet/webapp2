@@ -32,7 +32,7 @@ jobs:
             addLatest: true
             push: true
             image: jay2k02/test-repository
-            tags: latest
+            tag: latest
             registry: docker.io
             username: ${{ secrets.DOCKER_USERNAME }}
             password: ${{ secrets.DOCKER_PASSWORD }}
