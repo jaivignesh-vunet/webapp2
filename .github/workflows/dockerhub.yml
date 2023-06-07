@@ -21,25 +21,18 @@ jobs:
             java-version: '11'
             distribution: 'temurin'
             cache: maven
+        
         - name: Build with Maven
           run: mvn -B package --file pom.xml
         
-        - name: Print Docker credentials
-          run: |
-            echo "DOCKER_USERNAME: $DOCKER_USERNAME"
-            echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
-          env:
-            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-        - name: Log in to Docker Hub
-          run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        
-        - name: Build and push Docker image
-          run: |
-            docker build -t docker.io/your-docker-hub-username/test-repository .
-            docker push docker.io/your-docker-hub-username/test-repository
-          env:
-                    DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-                    DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-                    working-directory: ./
+        - name: Build and push Docker Image
+          uses: mr-smithers-excellent/docker-build-push@v4
+          with:
+            context: .  # The context for the build, assuming the Dockerfile is in the root of the repository
+            addLatest: true
+            push: true
+            image: jay2k02/test-repository
+            tags: latest
+            registry: docker.io
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
