@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp2
+  template:
+    metadata:
+      labels:
+        app: webapp2
+    spec:
+      containers:
+        - name: webapp2
+          image: jay2k02/test-repository:latest
+          ports:
+            - containerPort: 8080
