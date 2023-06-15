@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build and push the image
       run:  |
-        sudo docker login --username jaivignesh-vunet --password ${{ secrets.GHCR }} ghcr.io
+        sudo docker login ghcr.io --username jaivignesh-vunet --password ${{ secrets.GHCR }} 
         sudo docker build . -t ghcr.io/jaivignesh-vunet/testimage:latest
         sudo docker push ghcr.io/jaivignesh-vunet/testimage:latest
       
